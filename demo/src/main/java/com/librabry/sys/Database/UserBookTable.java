@@ -27,11 +27,13 @@ public class UserBookTable implements Table {
         if (record instanceof UserBook) {
             UserBook userBook = (UserBook) record;
             userBooks.put(userBook.getId(), userBook.getId());
-      } else {
+        } else {
             throw new IllegalArgumentException("Record must be of type UserBook");
         }
 
     }
+    
+
 
     @Override
     public void deleteRecord(String id) throws IllegalArgumentException {
