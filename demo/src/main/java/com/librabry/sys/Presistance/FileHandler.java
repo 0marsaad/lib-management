@@ -1,7 +1,12 @@
 package com.librabry.sys.Presistance;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import com.librabry.sys.Model.*;
 
 public class FileHandler {
@@ -42,27 +47,114 @@ public class FileHandler {
         }
     }
     public void saveUsers (User user[]) {
-        
-
-
+             
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            bw.write("Name,Id\n"); // Header
+            for (User u : user) {
+                bw.write(u.getName() + "," + u.getId() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     
     public void saveBooks(Book book[]) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH2))) {
+            bw.write("Title,Author,ISBN,Quantity\n"); // Header
+            for (Book b : book) {
+                bw.write(b.getName() + "," + b.getAuthor() + "," + b.getId() + "," + b.getQuantity() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void saveUserBooks(UserBook userBook[]) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH3))) {
+            bw.write("UserId,BookISBN\n"); // Header
+            for (UserBook ub : userBook) {
+                bw.write(ub.getId() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public User[] loadUsers() {
-        return new User[0]; 
+        ArrayList<User> users = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            boolean firstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (firstLine) { // skip header
+                    firstLine = false;
+                    continue;
+                }
+                String[] parts = line.split(",", 2);
+                if (parts.length >= 1) {
+                    String name = parts[0];
+                    String userId = parts[1];
+                    
+                    users.add(new User(name, userId));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users.toArray(new User[0]);
     }
 
     public Book[] loadBooks() {
-        return new Book[0]; 
+        ArrayList<Book> books = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH2))) {
+            String line;
+            boolean firstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (firstLine) { // skip header
+                    firstLine = false;
+                    continue;
+                }
+                String[] parts = line.split(",", 4);
+                if (parts.length >= 3) {
+                    String title = parts[0];
+                    String author = parts[1];
+                    String isbn = parts[2];
+                    int quantity = Integer.parseInt(parts[3]);
+                    books.add(new Book(isbn, title, author, quantity));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return books.toArray(new Book[0]);
     }
 
     public UserBook[] loadUserBooks() {
+        ArrayList<UserBook> userBooks = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH3))) {
+            String line;
+            boolean firstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (firstLine) { // skip header
+                    firstLine = false;
+                    continue;
+                }
+                String[] parts = line.split(",", 2);
+                if (parts.length >= 2) {
+                    String userId = parts[0];
+                    String bookIsbn = parts[1];
+                    userBooks.add(new UserBook(userId, bookIsbn));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!userBooks.isEmpty()) {
+            return userBooks.toArray(new UserBook[0]);
+        }
+        // Return an empty array if no user books were found
+        System.out.println("No user books found in the file.");
         return new UserBook[0]; 
     }
 

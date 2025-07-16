@@ -1,9 +1,6 @@
 package com.librabry.sys.Database;
-
 import java.io.IOException;
-
 import com.librabry.sys.Model.*;
-
 import com.librabry.sys.Presistance.*;
 
 public class database {
@@ -46,17 +43,29 @@ public class database {
         
     }
 
-    public UserTable getUserTable() {
-        return userTable;
+    void addUser(User user) {
+        userTable.addRecord(user);
+        try {
+            fileHandler.saveUsers((User[]) userTable.getAllRecords());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error saving users: " + e.getMessage());
+        }
     }
 
-    public BookTable getBookTable() {
-        return bookTable;
+    void addBook(Book book) {
+        bookTable.addRecord(book);
+        try {
+            fileHandler.saveBooks((Book[]) bookTable.getAllRecords());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error saving books: " + e.getMessage());
+        }
     }
 
-    public UserBookTable getUserBookTable() {
-        return userBookTable;
-    }
+    
+
+    
+
+    
 
 
     

@@ -1,16 +1,13 @@
 package com.librabry.sys.Model;
 
-import java.util.ArrayList;
-
 public class User implements model {
 
     protected String id;
     protected String name;
 
-    public User(String id, String name, ArrayList<Book> borrowedBooks) {
+    public User(String id, String name) {
         this.id = id;
         this.name = name;
-
     }
     
     @Override
