@@ -69,6 +69,8 @@ public class UserBookTable implements Table {
         }
     }
 
+    
+
     @Override
     public model[] getAllRecords() {
         return userBooks.values().stream()

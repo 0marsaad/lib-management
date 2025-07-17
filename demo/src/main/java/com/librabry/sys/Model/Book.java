@@ -35,6 +35,18 @@ public class Book implements model {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public void incrementQuantity() {
+        this.quantity++;
+    }
+
+    public void decrementQuantity() throws IllegalArgumentException {
+        if (this.quantity > 0) {
+            this.quantity--;
+        } else {
+            throw new IllegalArgumentException("Quantity cannot be less than zero");
+        }
+    }
     
     
 }

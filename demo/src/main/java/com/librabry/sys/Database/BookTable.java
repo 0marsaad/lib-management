@@ -70,4 +70,18 @@ public class BookTable implements Table {
         return bookRecords.values().toArray(new Book[0]);
     }
 
+    public Book getBookByTitle(String title) {
+        return bookRecords.values().stream()
+                .filter(book -> book.getName().equalsIgnoreCase(title))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No book found with title: " + title));
+    }
+
+    public Book[] getBooksByAuthor(String author) {
+        return bookRecords.values().stream()
+                .filter(book -> book.getAuthor().equalsIgnoreCase(author))
+                .toArray(Book[]::new);
+    }
+
+
 }

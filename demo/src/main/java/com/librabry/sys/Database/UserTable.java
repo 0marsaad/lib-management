@@ -73,4 +73,6 @@ public class UserTable implements Table {
         // Logic to retrieve all User records
         return users.values().toArray(new User[0]); // Placeholder return
     }
+
+    
 }
